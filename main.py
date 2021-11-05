@@ -25,7 +25,7 @@ def plot_solution_3d(x, y, solution):
     X, Y = np.meshgrid(x, y)
     ax1 = plt.axes(projection='3d')
     im1 = ax1.plot_surface(X, Y, solution, cmap='viridis', alpha=0.9)
-    plt.savefig('leapfrog_t5_h100.png')
+    plt.show()
 
 
 def plot_solution_lvl(x, y, solution):
