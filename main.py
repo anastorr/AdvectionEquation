@@ -18,7 +18,7 @@ def c1(x, y, x0, y0, r):
 
 def c2(x, y, x0, y0, r, sigma0, sigma1):
     x_mesh, y_mesh = np.meshgrid(x, y)
-    return np.where((((x_mesh-x0)**2/sigma0**2+(y_mesh-y0)**2/sigma1**2) > r**2), 0, np.e**(-((x_mesh-x0)**2/sigma0**2+(y_mesh-y0)**2/sigma1**2))).T
+    return np.where((((x_mesh-x0)**2/sigma0**2+(y_mesh-y0)**2/sigma1**2) > r**2), 0, np.e**(-0.5*((x_mesh-x0)**2/sigma0**2+(y_mesh-y0)**2/sigma1**2))).T
 
 
 def plot_solution_3d(x, y, solution):
@@ -42,19 +42,20 @@ if __name__ == '__main__':
     r = 1000
     sigma0 = 500
     sigma1 = 700
-    omega = 0.0005
+    omega = 0.0002*np.pi
     L = 5000
     h = 100
     tau = 5
     T = 2*np.pi/omega
     x = np.arange(-L, L, h)
     y = np.arange(-L, L, h)
-    t = np.arange(0, T, tau)
+    t = np.arange(0, T+1, tau)
     c = np.zeros((t.shape[0], x.shape[0], y.shape[0]))
     c[0] = c0(x, y, x0, y0, r, sigma0)
     u = -omega*y
     v = omega*x
     v, u = np.meshgrid(v, u)
     c = leapfrog(c, tau, h, u, v)
+    # np.save('corner_transport_upwind/data/h100t5', c)
     plot_solution_3d(x, y, np.round(c[-1], 6))
 

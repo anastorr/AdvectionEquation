@@ -46,5 +46,8 @@ def corner_transport_upwind(c, tau, h, u, v):
 
 def flux_limiter(c, tau, h, u, v):
     for n in range(1, c.shape[0]):
-        f = np.zeros(c.shape[1:])
-        g = np.zeros(c.shape[1:])
+        f = np.zeros(u.shape)
+        g = np.zeros(v.shape)
+        R = c[n-1, 1:-1, 1:-1] - c[n-1, :-2, 1:-1]
+        f += u[:-1, 1:-1]*np.where(u > 0, c[n-1, 1:, 1:-1], c[n-1, :-1, 1:-1])
+        g -= tau/2/h*u[:-1, 1:-1]*R*np.where(v > 0, )
